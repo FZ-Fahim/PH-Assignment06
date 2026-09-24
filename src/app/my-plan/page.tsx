@@ -3,14 +3,14 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useFitLog } from "@/context/LogContext";
 import { useSearchParams } from "next/navigation";
 
 type Tab = "plan" | "saved";
 type ToastType = "success" | "remove";
 
-const MyPlanPage = () => {
+const MyPlanContent = () => {
   const {
     plan,
     saved,
@@ -321,6 +321,18 @@ const MyPlanPage = () => {
     </main>
   );
 };
-
-export default MyPlanPage;
-
+export default function MyPlanPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex-1 bg-[var(--fitlog-bg)]">
+          <div className="flex min-h-[60vh] items-center justify-center">
+            <span className="loading loading-spinner loading-lg text-[var(--fitlog-accent)]" />
+          </div>
+        </main>
+      }
+    >
+      <MyPlanContent />
+    </Suspense>
+  );
+}
