@@ -20,9 +20,15 @@ type FitLogContextType = {
   removeSaved: (id: number) => void;
 };
 
-const FitLogContext = createContext<FitLogContextType | undefined>(undefined);
+const FitLogContext = createContext<FitLogContextType | undefined>(
+  undefined
+);
 
-export function FitLogProvider({ children }: { children: ReactNode }) {
+export function FitLogProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const [plan, setPlan] = useState<Workout[]>([]);
   const [saved, setSaved] = useState<Workout[]>([]);
   const [hydrated, setHydrated] = useState(false);
@@ -62,6 +68,10 @@ export function FitLogProvider({ children }: { children: ReactNode }) {
 
   const addToPlan = (workout: Workout) => {
     setPlan((current) => {
+      if (current.length >= 5) {
+        return current;
+      }
+
       if (current.some((item) => item.id === workout.id)) {
         return current;
       }
@@ -120,8 +130,11 @@ export function useFitLog() {
   const context = useContext(FitLogContext);
 
   if (!context) {
-    throw new Error("useFitLog must be used inside FitLogProvider");
+    throw new Error(
+      "useFitLog must be used inside FitLogProvider"
+    );
   }
 
   return context;
 }
+
