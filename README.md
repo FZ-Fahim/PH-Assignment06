@@ -8,7 +8,7 @@ FitLog is a modern workout library and personal workout planning application bui
 
 ## 🔗 Live Demo
 
-**Live Website:** 
+**Live Website:**  https://ph-assignment06.vercel.app/
 
 ---
 
