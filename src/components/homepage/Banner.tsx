@@ -6,7 +6,7 @@ const Banner = () => {
   return (
     <section className="bg-[#0b0c0e]">
       <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6 lg:px-8">
-        <div className="grid min-h-[450px] w-full max-w-[1232px] items-center overflow-hidden rounded-xl border border-[#252932] bg-[#15171d] md:grid-cols-[1.1fr_0.9fr]">
+        <div className="grid min-h-[450px] items-center overflow-hidden rounded-xl border border-[#252932] bg-[#15171d] md:grid-cols-[1.1fr_0.9fr]">
           
           {/* Left Content */}
           <div className="px-7 py-7 lg:px-8">

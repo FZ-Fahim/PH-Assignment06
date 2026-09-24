@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useFitLog } from "@/context/LogContext";
+import {useSearchParams} from "next/navigation";
 
 type Tab = "plan" | "saved";
 
@@ -16,19 +17,14 @@ markAsDone,
 removeSaved,
 } = useFitLog();
 
-const [activeTab, setActiveTab] = useState<Tab>("plan");
 const [message, setMessage] = useState("");
 const [sortBy, setSortBy] = useState("duration");
+
+const searchParams = useSearchParams();
+
+const activeTab: Tab =
+  searchParams.get("tab") === "saved" ? "saved" : "plan";
 const currentWorkouts = activeTab === "plan" ? plan : saved;
-
-useEffect(() => {
-  const params = new URLSearchParams(window.location.search);
-  const tab = params.get("tab");
-
-  if (tab === "saved") {
-    setActiveTab("saved");
-  }
-}, []);
 const sortedWorkouts = [...currentWorkouts].sort((a, b) => {
 if (sortBy === "calories") {
 return a.caloriesBurned - b.caloriesBurned;
@@ -129,29 +125,27 @@ return ( <main className="flex-1 bg-[var(--fitlog-bg)]"> <section className="bor
       {/* Tabs */}
       <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-b border-[var(--fitlog-border)]">
         <div className="flex gap-2">
-          <button
-            type="button"
-            onClick={() => setActiveTab("plan")}
-            className={`px-4 py-3 text-xs font-bold uppercase tracking-wide ${
-              activeTab === "plan"
-                ? "border-b-2 border-[var(--fitlog-accent)] text-[var(--fitlog-accent)]"
-                : "text-[var(--fitlog-muted)] hover:text-white"
-            }`}
-          >
-            Today&apos;s Plan ({plan.length})
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab("saved")}
-            className={`px-4 py-3 text-xs font-bold uppercase tracking-wide ${
-              activeTab === "saved"
-                ? "border-b-2 border-[var(--fitlog-accent)] text-[var(--fitlog-accent)]"
-                : "text-[var(--fitlog-muted)] hover:text-white"
-            }`}
-          >
-            Saved ({saved.length})
-          </button>
+            <Link
+              href="/my-plan"
+              className={`px-4 py-3 text-xs font-bold uppercase tracking-wide ${
+                activeTab === "plan"
+                  ? "border-b-2 border-[var(--fitlog-accent)] text-[var(--fitlog-accent)]"
+                  : "text-[var(--fitlog-muted)] hover:text-white"
+              }`}
+            >
+              Today&apos;s Plan ({plan.length})
+            </Link>
+          
+            <Link
+              href="/my-plan?tab=saved"
+              className={`px-4 py-3 text-xs font-bold uppercase tracking-wide ${
+                activeTab === "saved"
+                  ? "border-b-2 border-[var(--fitlog-accent)] text-[var(--fitlog-accent)]"
+                  : "text-[var(--fitlog-muted)] hover:text-white"
+              }`}
+            >
+              Saved ({saved.length})
+            </Link>
         </div>
 
         {/* Sort */}
@@ -185,14 +179,14 @@ return ( <main className="flex-1 bg-[var(--fitlog-bg)]"> <section className="bor
 
       {/* Workout Cards */}
       {sortedWorkouts.length > 0 ? (
-        <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 space-y-4">
           {sortedWorkouts.map((workout) => (
             <article
               key={workout.id}
-              className="overflow-hidden rounded-2xl border border-[var(--fitlog-border)] bg-[var(--fitlog-card)]"
+              className="flex flex-col gap-5 rounded-2xl border border-[var(--fitlog-border)] bg-[var(--fitlog-card)] p-4 sm:flex-row sm:items-center"
             >
               {/* Image */}
-              <div className="relative h-52">
+              <div className="relative h-20 w-full shrink-0 overflow-hidden rounded-lg sm:h-20 sm:w-36">
                 <Image
                   src={workout.image}
                   alt={workout.name}
@@ -200,81 +194,76 @@ return ( <main className="flex-1 bg-[var(--fitlog-bg)]"> <section className="bor
                   className="object-cover"
                 />
               </div>
-
-              <div className="p-5">
-                {/* Muscle Groups */}
-                <div className="flex flex-wrap gap-2">
-                  {workout.muscleGroups.map((muscle) => (
-                    <span
-                      key={muscle}
-                      className="rounded-full border border-[var(--fitlog-accent)] px-2 py-1 text-[9px] font-bold uppercase tracking-wide text-[var(--fitlog-accent)]"
-                    >
-                      {muscle}
-                    </span>
-                  ))}
-                </div>
-
+          
+              {/* Workout Info */}
+              <div className="min-w-0 flex-1">
                 {/* Name */}
-                <h2 className="mt-4 font-display text-2xl font-bold uppercase text-white">
+                <h2 className="font-display text-xl font-bold uppercase leading-none text-white">
                   {workout.name}
                 </h2>
-
+          
                 {/* Equipment */}
-                <p className="mt-2 text-xs text-[var(--fitlog-muted)]">
+                <p className="mt-1 text-xs text-[var(--fitlog-muted)]">
                   {workout.equipment}
                 </p>
-
+          
                 {/* Stats */}
-                <div className="mt-5 grid grid-cols-3 border-t border-[var(--fitlog-border)] pt-4 text-xs text-[var(--fitlog-muted)]">
-                  <span>{workout.duration} min</span>
-
-                  <span className="text-center">
+                <div className="mt-2 flex flex-wrap items-center gap-4 text-xs text-[var(--fitlog-muted)]">
+                  <span className="flex items-center gap-1.5">
+                    <span className="text-[var(--fitlog-accent)]">◷</span>
+                    {workout.duration} min
+                  </span>
+          
+                  <span className="flex items-center gap-1.5">
+                    <span className="text-[var(--fitlog-accent)]">♨</span>
                     {workout.caloriesBurned} kcal
                   </span>
-
-                  <span className="text-right">
-                    ★ {workout.rating}
+          
+                  <span className="flex items-center gap-1.5">
+                    <span className="text-[var(--fitlog-accent)]">☆</span>
+                    {workout.rating}
                   </span>
                 </div>
-
-                {/* Actions */}
-                <div className="mt-5 flex flex-wrap gap-2">
-                  <Link
-                    href={`/workouts/${workout.id}`}
-                    className="flex-1 rounded-full bg-[var(--fitlog-accent)] px-4 py-3 text-center text-xs font-bold uppercase text-black hover:opacity-90"
-                  >
-                    View Details
-                  </Link>
-
-                  {activeTab === "plan" ? (
-                    <>
-                      <button
-                        type="button"
-                        onClick={() => handleDone(workout.id)}
-                        className="rounded-full border border-[var(--fitlog-border)] px-4 py-3 text-xs font-bold uppercase text-white hover:border-[var(--fitlog-accent)] hover:text-[var(--fitlog-accent)]"
-                      >
-                        Done
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleRemove(workout.id)}
-                        aria-label={`Remove ${workout.name}`}
-                        className="rounded-full border border-[var(--fitlog-border)] px-4 py-3 text-xs font-bold text-[var(--fitlog-muted)] hover:border-red-500 hover:text-red-400"
-                      >
-                        ×
-                      </button>
-                    </>
-                  ) : (
+              </div>
+          
+              {/* Actions */}
+              <div className="flex shrink-0 items-center gap-3">
+                <Link
+                  href={`/workouts/${workout.id}`}
+                  className="rounded-full border border-[var(--fitlog-border)] px-5 py-2.5 text-xs font-medium text-white transition-colors hover:border-[var(--fitlog-accent)] hover:text-[var(--fitlog-accent)]"
+                >
+                  View Details
+                </Link>
+          
+                {activeTab === "plan" ? (
+                  <>
                     <button
                       type="button"
-                      onClick={() => handleRemoveSaved(workout.id)}
-                      className="rounded-full border border-[var(--fitlog-border)] px-4 py-3 text-xs font-bold uppercase text-white hover:border-red-500 hover:text-red-400"
+                      onClick={() => handleDone(workout.id)}
+                      className="rounded-full bg-[var(--fitlog-accent)] px-5 py-2.5 text-xs font-bold text-black transition-opacity hover:opacity-90"
                     >
-                      Remove
+                      <span className="mr-1">✓</span>
+                      Mark as Done
                     </button>
-                  )}
-                </div>
+              
+                    <button
+                      type="button"
+                      onClick={() => handleRemove(workout.id)}
+                      aria-label={`Remove ${workout.name}`}
+                      className="px-1 text-lg text-[var(--fitlog-muted)] transition-colors hover:text-red-400"
+                    >
+                      ×
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveSaved(workout.id)}
+                    className="rounded-full border border-[var(--fitlog-border)] px-5 py-2.5 text-xs font-bold uppercase text-white transition-colors hover:border-red-500 hover:text-red-400"
+                  >
+                    Remove
+                  </button>
+                )}
               </div>
             </article>
           ))}
@@ -285,13 +274,13 @@ return ( <main className="flex-1 bg-[var(--fitlog-bg)]"> <section className="bor
           <h2 className="font-display text-3xl font-bold uppercase text-white">
             NOTHING HERE YET
           </h2>
-
+      
           <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-[var(--fitlog-muted)]">
             {activeTab === "plan"
               ? "Add workouts to today's plan and they will appear here."
               : "Browse the library and save a lift to get started."}
           </p>
-
+          
           <Link
             href="/#library"
             className="mt-6 inline-block rounded-full bg-[var(--fitlog-accent)] px-6 py-3 text-xs font-bold uppercase text-black hover:opacity-90"
@@ -300,6 +289,7 @@ return ( <main className="flex-1 bg-[var(--fitlog-bg)]"> <section className="bor
           </Link>
         </div>
       )}
+      
     </div>
   </section>
 </main>
