@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFitLog } from "@/context/LogContext";
 
 type Tab = "plan" | "saved";
@@ -19,9 +19,16 @@ removeSaved,
 const [activeTab, setActiveTab] = useState<Tab>("plan");
 const [message, setMessage] = useState("");
 const [sortBy, setSortBy] = useState("duration");
-
 const currentWorkouts = activeTab === "plan" ? plan : saved;
 
+useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+  const tab = params.get("tab");
+
+  if (tab === "saved") {
+    setActiveTab("saved");
+  }
+}, []);
 const sortedWorkouts = [...currentWorkouts].sort((a, b) => {
 if (sortBy === "calories") {
 return a.caloriesBurned - b.caloriesBurned;
