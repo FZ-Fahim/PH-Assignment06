@@ -63,11 +63,21 @@ const WorkoutActions = ({ workout }: Props) => {
         </button>
       </div>
 
+      
+
       {message && (
-        <div className="mt-4 rounded-xl border border-[var(--fitlog-border)] bg-[var(--fitlog-card)] px-4 py-3 text-center text-sm text-white">
-          {message}
+        <div className="fixed right-4 top-20 z-50 flex items-center gap-3 rounded-xl border border-[var(--fitlog-border)] bg-[var(--fitlog-card)] px-5 py-3 text-sm font-medium text-white shadow-2xl sm:right-6">
+          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--fitlog-accent)] text-sm font-bold text-black">
+            ✓
+          </span>
+      
+          <span>{message}</span>
         </div>
       )}
+
+
+      
+
     </>
   );
 };
