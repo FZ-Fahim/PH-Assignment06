@@ -6,6 +6,7 @@ import WorkoutAction from "@/components/workout/WorkoutAction";
 
 type Props = {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ from?: string }>;
 };
 
 async function getWorkout(id: string): Promise<Workout | null> {
@@ -23,8 +24,13 @@ async function getWorkout(id: string): Promise<Workout | null> {
   return response.json();
 }
 
-export default async function WorkoutDetails({ params }: Props) {
+export default async function WorkoutDetails({
+  params,
+  searchParams,
+}: Props) {
   const { id } = await params;
+  const { from } = await searchParams;
+
   const workout = await getWorkout(id);
 
   if (!workout) {
@@ -35,12 +41,12 @@ export default async function WorkoutDetails({ params }: Props) {
     <main className="flex-1">
       <section className="border-b border-[var(--fitlog-border)] px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
         <div className="mx-auto max-w-[1400px]">
-          {/* Back to library */}
+          {/* Back Button */}
           <Link
-            href="/#library"
+            href={from === "my-plan" ? "/my-plan" : "/#library"}
             className="mb-7 inline-block text-xs font-semibold uppercase tracking-wide text-[var(--fitlog-muted)] transition-colors hover:text-[var(--fitlog-accent)]"
           >
-            ← Back to library
+            ← {from === "my-plan" ? "Back to My Plan" : "Back to Library"}
           </Link>
 
           <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
@@ -144,7 +150,7 @@ export default async function WorkoutDetails({ params }: Props) {
               </div>
 
               {/* Buttons */}
-                <WorkoutAction workout={workout} />
+              <WorkoutAction workout={workout} />
             </div>
           </div>
         </div>

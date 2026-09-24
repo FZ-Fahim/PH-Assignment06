@@ -256,7 +256,7 @@ const MyPlanPage = () => {
                   {/* Actions */}
                   <div className="flex shrink-0 items-center gap-3">
                     <Link
-                      href={`/workouts/${workout.id}`}
+                      href={`/workouts/${workout.id}?from=my-plan`}
                       className="rounded-full border border-[var(--fitlog-border)] px-5 py-2.5 text-xs font-medium text-white transition-colors hover:border-[var(--fitlog-accent)] hover:text-[var(--fitlog-accent)]"
                     >
                       View Details

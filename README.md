@@ -140,7 +140,7 @@ src/
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/FZ-Fahim/PH-Assignment01.git
+git clone https://github.com/FZ-Fahim/PH-Assignment06.git
 ```
 
 ### Open the Project
@@ -148,7 +148,7 @@ git clone https://github.com/FZ-Fahim/PH-Assignment01.git
 Navigate to the project folder:
 
 ```bash
-cd PH-Assignment01
+cd PH-Assignment06
 ```
 
 ### Install Dependencies
