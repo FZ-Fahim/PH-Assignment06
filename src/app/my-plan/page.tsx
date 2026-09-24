@@ -75,7 +75,7 @@ removeSaved(id);
 showMessage("Workout removed from saved.");
 };
 
-return ( <main className="flex-1 bg-[var(--fitlog-bg)]"> <section className="border-b border-[var(--fitlog-border)] px-4 py-12 sm:px-6 lg:px-8 lg:py-16"> <div className="mx-auto max-w-[1400px]">
+return ( <main className="flex-1 bg-[var(--fitlog-bg)]"><section className=" border-[var(--fitlog-border)] px-4 py-12 sm:px-6 lg:px-8 lg:py-16"> <div className="mx-auto max-w-[1400px]">
 
 
       {/* Header */}
@@ -90,40 +90,45 @@ return ( <main className="flex-1 bg-[var(--fitlog-bg)]"> <section className="bor
       </div>
 
       {/* Metrics */}
-      <div className="mt-10 grid grid-cols-3 gap-3 sm:gap-5">
-        <div className="rounded-2xl border border-[var(--fitlog-border)] bg-[var(--fitlog-card)] p-4 sm:p-6">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--fitlog-muted)] sm:text-xs">
-            Exercises
-          </p>
-
-          <p className="mt-2 font-display text-3xl font-bold text-white sm:text-4xl">
-            {currentWorkouts.length}
-          </p>
+        <div className="mt-10 rounded-2xl border border-[var(--fitlog-border)] bg-[var(--fitlog-card)] px-6 py-7 sm:px-8">
+          <div className="grid grid-cols-3">
+            {/* Exercises */}
+            <div className="border-r border-[var(--fitlog-border)] pr-6 sm:pr-8">
+              <p className="text-xs text-[var(--fitlog-muted)]">
+                Exercises
+              </p>
+        
+              <p className="mt-2 font-display text-4xl font-bold leading-none text-[var(--fitlog-accent)]">
+                {currentWorkouts.length}
+              </p>
+            </div>
+        
+            {/* Minutes */}
+            <div className="border-r border-[var(--fitlog-border)] px-6 sm:px-8">
+              <p className="text-xs text-[var(--fitlog-muted)]">
+                Minutes
+              </p>
+        
+              <p className="mt-2 font-display text-4xl font-bold leading-none text-white">
+                {totalMinutes}
+              </p>
+            </div>
+        
+            {/* Calories */}
+            <div className="pl-6 sm:pl-8">
+              <p className="text-xs text-[var(--fitlog-muted)]">
+                Calories
+              </p>
+        
+              <p className="mt-2 font-display text-4xl font-bold leading-none text-white">
+                {totalCalories}
+              </p>
+            </div>
+          </div>
         </div>
-
-        <div className="rounded-2xl border border-[var(--fitlog-border)] bg-[var(--fitlog-card)] p-4 sm:p-6">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--fitlog-muted)] sm:text-xs">
-            Minutes
-          </p>
-
-          <p className="mt-2 font-display text-3xl font-bold text-white sm:text-4xl">
-            {totalMinutes}
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-[var(--fitlog-border)] bg-[var(--fitlog-card)] p-4 sm:p-6">
-          <p className="text-[10px] font-bold uppercase tracking-wider text-[var(--fitlog-muted)] sm:text-xs">
-            Calories
-          </p>
-
-          <p className="mt-2 font-display text-3xl font-bold text-white sm:text-4xl">
-            {totalCalories}
-          </p>
-        </div>
-      </div>
 
       {/* Tabs */}
-      <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-b border-[var(--fitlog-border)]">
+      <div className="mt-10 flex flex-wrap items-center justify-between gap-4  border-[var(--fitlog-border)]">
         <div className="flex gap-2">
             <Link
               href="/my-plan"
@@ -171,12 +176,12 @@ return ( <main className="flex-1 bg-[var(--fitlog-bg)]"> <section className="bor
       </div>
 
       {/* Toast */}
-      {message && (
-        <div className="mt-5 rounded-xl border border-[var(--fitlog-border)] bg-[var(--fitlog-card)] px-4 py-3 text-center text-sm text-white">
-          {message}
-        </div>
-      )}
 
+        {message && (
+          <div className="fixed right-4 top-20 z-50 rounded-xl border border-[var(--fitlog-border)] bg-[var(--fitlog-card)] px-5 py-3 text-sm font-medium text-white shadow-2xl sm:right-6">
+            {message}
+          </div>
+        )}
       {/* Workout Cards */}
       {sortedWorkouts.length > 0 ? (
         <div className="mt-8 space-y-4">
