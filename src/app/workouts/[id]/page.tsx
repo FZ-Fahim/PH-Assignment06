@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Workout } from "@/types/workout";
+import WorkoutAction from "@/components/workout/WorkoutAction";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -143,21 +144,7 @@ export default async function WorkoutDetails({ params }: Props) {
               </div>
 
               {/* Buttons */}
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <button
-                  type="button"
-                  className="flex-1 rounded-full bg-[var(--fitlog-accent)] px-5 py-3 text-xs font-bold uppercase text-black transition-opacity hover:opacity-90"
-                >
-                  + Add to today&apos;s plan
-                </button>
-
-                <button
-                  type="button"
-                  className="flex-1 rounded-full border border-[var(--fitlog-border)] px-5 py-3 text-xs font-bold uppercase text-white transition-colors hover:border-[var(--fitlog-accent)] hover:text-[var(--fitlog-accent)]"
-                >
-                  ♡ Save for later
-                </button>
-              </div>
+                <WorkoutAction workout={workout} />
             </div>
           </div>
         </div>
