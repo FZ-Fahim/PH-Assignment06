@@ -81,9 +81,9 @@ return (
                  {workout.equipment}
                </p>
                {/* Stats */}
-               <div className="mt-5 flex items-center justify-between border-t border-[#252932] pt-4 text-xs text-[#8b909a]">
-                 <span>{workout.duration} min</span>
-                 <span>{workout.caloriesBurned} kcal</span>
+               <div className="mt-5 flex items-center gap-4 border-t border-[#252932] pt-4 text-xs text-[#8b909a]">
+                 <span>◷ {workout.duration} min</span>
+                 <span>♨ {workout.caloriesBurned} kcal</span>
                  <span>★ {workout.rating}</span>
                </div>
              </div>
